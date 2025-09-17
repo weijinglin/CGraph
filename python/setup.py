@@ -59,10 +59,12 @@ class build_ext(_build_ext):
             sys.executable, "-m", "pybind11_stubgen", __PYCGRAPH_NAME__, "--output-dir=."
         ])
         # 拷贝生成的 .pyi 文件到包目录
-        stub_path = os.path.join(f"{__PYCGRAPH_NAME__}-stubs", f"{__PYCGRAPH_NAME__}.pyi")
+        build_lib = self.build_lib
+        stub_path = os.path.join(os.path.dirname(__file__), f"{__PYCGRAPH_NAME__}.pyi")
+        dst_pyi = os.path.join(os.path.dirname(__file__), build_lib, "PyCGraph.pyi")
         if os.path.exists(stub_path):
             import shutil
-            shutil.copy(stub_path, os.path.join(os.path.dirname(__file__), f"{__PYCGRAPH_NAME__}.pyi"))
+            shutil.copy(stub_path, dst_pyi)
 
 setup(
     name=__PYCGRAPH_NAME__,
